@@ -91,6 +91,8 @@ async def all_order_list(Authorize: AuthJWT=Depends()):
     return jsonable_encoder(custom_data)
 
 
+
+
 @order_router.get("/{order_id}")
 async def get_order_by_id(order_id: int, Authorize: AuthJWT=Depends()):
     
