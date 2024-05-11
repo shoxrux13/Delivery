@@ -63,3 +63,20 @@ class OrderStatusModel(BaseModel):
                 "order_status": "PENDING"
             }
         }
+        
+class ProductModel(BaseModel):
+    name: str
+    description: str
+    price: int
+    quantity: int
+
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "name": "Iphone 12",
+                "description": "Iphone 12 pro max",
+                "price": 2000,
+                "quantity": 10
+            }
+        }
