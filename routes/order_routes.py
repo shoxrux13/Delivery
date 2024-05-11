@@ -27,6 +27,8 @@ async def welcome(Authorize: AuthJWT=Depends()):
     return {"message": "Welcome to the order page"}
 
 
+
+
 #Yangi buyurtma yaratish
 @order_router.post("/make", status_code=status.HTTP_201_CREATED)
 async def make_order(order: OrderModel, Authorize: AuthJWT=Depends()):
@@ -42,7 +44,7 @@ async def make_order(order: OrderModel, Authorize: AuthJWT=Depends()):
     
     new_order = Order(
         quantity=order.quantity,
-        # product_id=order.product_id
+        product_id=order.product_id
     )
 
     new_order.user = user
@@ -57,9 +59,20 @@ async def make_order(order: OrderModel, Authorize: AuthJWT=Depends()):
             "id": new_order.id,
             "quantity": new_order.quantity,
             "order_status": new_order.order_status,
+            "total_price": f"{new_order.quantity * new_order.product.price} UZS",
+            "product": {
+                "id": new_order.product.id,
+                "name": new_order.product.name,
+                "description": new_order.product.description,
+                "price": new_order.product.price
+            }
         }
     }
     return jsonable_encoder(data)
+
+
+
+
 
 @order_router.get("/list")
 async def all_order_list(Authorize: AuthJWT=Depends()):
@@ -81,9 +94,16 @@ async def all_order_list(Authorize: AuthJWT=Depends()):
             "id": order.id,
             "quantity": order.quantity,
             "order_status": order.order_status.value,
+            "total_price": f"{order.quantity * order.product.price} UZS",
             "user": {
                 "id": order.user.id,
                 "username": order.user.username
+            },
+            "product": {
+                "id": order.product.id,
+                "name": order.product.name,
+                "description": order.product.description,
+                "price": order.product.price
             }
         }
         for order in orders
@@ -115,9 +135,16 @@ async def get_order_by_id(order_id: int, Authorize: AuthJWT=Depends()):
         "id": order.id,
         "quantity": order.quantity,
         "order_status": order.order_status.value,
+        "total_price": f"{order.quantity * order.product.price} UZS",
         "user": {
             "id": order.user.id,
             "username": order.user.username
+        },
+        "product": {
+            "id": order.product.id,
+            "name": order.product.name,
+            "description": order.product.description,
+            "price": order.product.price
         }
     }
     return jsonable_encoder(data)
