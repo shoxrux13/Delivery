@@ -20,15 +20,15 @@ class User(Base):
 
 class Order(Base):
     ORDER_STATUS = (
-        ('pending', 'pending'),
-        ('processing', 'processing'),
-        ('completed', 'completed'),
-        ('cancelled', 'cancelled'),
+        ('PENDING', 'pending'),
+        ('PROCESSING', 'processing'),
+        ('DELIVERED', 'delivered'),
+        ('CANCELED', 'canceled')
     )
 
     __tablename__ = 'order'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    quantity = Column(Integer, nullable=True)
+    quantity = Column(Integer, nullable=False)
     order_status = Column(ChoiceType(ORDER_STATUS) , default='PENDING')
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship('User', back_populates='orders')
